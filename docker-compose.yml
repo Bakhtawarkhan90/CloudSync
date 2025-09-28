@@ -1,0 +1,36 @@
+services:
+  web:
+    build: .
+    container_name: flask
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: database
+      MYSQL_USER: root
+      MYSQL_PASSWORD: kali
+      MYSQL_DATABASE: form
+    networks:
+      - cloud
+    depends_on:
+      - db   # simple wait for container start
+
+  db:
+    image: mysql:5.7
+    container_name: database
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: kali
+      MYSQL_DATABASE: form
+    ports:
+      - "3306:3306"
+    networks:
+      - cloud
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
+networks:
+  cloud:
+
